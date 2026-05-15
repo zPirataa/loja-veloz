@@ -1,0 +1,84 @@
+version: '3.8'
+
+networks:
+  loja-veloz-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: loja-postgres
+    environment:
+      POSTGRES_USER: loja_user
+      POSTGRES_PASSWORD: loja_password
+      POSTGRES_DB: loja_pedidos
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - loja-veloz-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U loja_user -d loja_pedidos"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  servico-estoque:
+    build: ./servico-estoque
+    container_name: loja-estoque
+    ports:
+      - "3001:3000"
+    networks:
+      - loja-veloz-network
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  servico-pagamentos:
+    build: ./servico-pagamentos
+    container_name: loja-pagamentos
+    ports:
+      - "3002:3000"
+    networks:
+      - loja-veloz-network
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  servico-pedidos:
+    build: ./servico-pedidos
+    container_name: loja-pedidos
+    environment:
+      - PAGAMENTO_SERVICE_URL=http://servico-pagamentos:3000
+      - ESTOQUE_SERVICE_URL=http://servico-estoque:3000
+    ports:
+      - "3003:3000"
+    networks:
+      - loja-veloz-network
+    depends_on:
+      servico-estoque:
+        condition: service_healthy
+      servico-pagamentos:
+        condition: service_healthy
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: loja-gateway
+    environment:
+      - PEDIDOS_SERVICE_URL=http://servico-pedidos:3000
+    ports:
+      - "8080:3000"
+    networks:
+      - loja-veloz-network
+    depends_on:
+      servico-pedidos:
+        condition: service_started

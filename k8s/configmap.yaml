@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: loja-config
+  namespace: loja-veloz
+data:
+  PAGAMENTO_SERVICE_URL: "http://servico-pagamentos:3000"
+  ESTOQUE_SERVICE_URL: "http://servico-estoque:3000"
+  PEDIDOS_SERVICE_URL: "http://servico-pedidos:3000"

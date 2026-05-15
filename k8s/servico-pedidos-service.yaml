@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: servico-pedidos
+  namespace: loja-veloz
+spec:
+  selector:
+    app: servico-pedidos
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000

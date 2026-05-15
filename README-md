@@ -1,0 +1,6 @@
+# Loja Veloz - Plataforma de Pedidos em Microsserviços
+
+## Como executar
+
+```bash
+docker compose up --build

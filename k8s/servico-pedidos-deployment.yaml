@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: servico-pedidos
+  namespace: loja-veloz
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: servico-pedidos
+  template:
+    metadata:
+      labels:
+        app: servico-pedidos
+    spec:
+      containers:
+        - name: servico-pedidos
+          image: loja-pedidos:1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PAGAMENTO_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: loja-config
+                  key: PAGAMENTO_SERVICE_URL
+            - name: ESTOQUE_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: loja-config
+                  key: ESTOQUE_SERVICE_URL
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"

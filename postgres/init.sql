@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS pedidos (
+    id SERIAL PRIMARY KEY,
+    pedido_id VARCHAR(100) UNIQUE NOT NULL,
+    cliente VARCHAR(100) NOT NULL,
+    produto VARCHAR(100) NOT NULL,
+    quantidade INTEGER NOT NULL,
+    status VARCHAR(50) DEFAULT 'pendente',
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS reservas_estoque (
+    id SERIAL PRIMARY KEY,
+    produto VARCHAR(100) NOT NULL,
+    quantidade INTEGER NOT NULL,
+    pedido_id VARCHAR(100),
+    reservado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
