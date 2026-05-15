@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
         - name: servico-pedidos
-          image: loja-pedidos:1.0
-          imagePullPolicy: IfNotPresent
+          image: zPirataa/servico-pedidos:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           env:

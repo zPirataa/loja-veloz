@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
         - name: servico-estoque
-          image: loja-estoque:1.0
-          imagePullPolicy: IfNotPresent
+          image: zPirataa/servico-estoque:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           readinessProbe:

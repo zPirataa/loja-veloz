@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
         - name: api-gateway
-          image: loja-gateway:1.0
-          imagePullPolicy: IfNotPresent
+          image: zPirataa/api-gateway:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           env:

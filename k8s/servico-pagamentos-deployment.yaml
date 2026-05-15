@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
         - name: servico-pagamentos
-          image: loja-pagamentos:1.0
-          imagePullPolicy: IfNotPresent
+          image: zPirataa/servico-pagamentos:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           readinessProbe:
