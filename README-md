@@ -1,6 +1,113 @@
-# Loja Veloz - Plataforma de Pedidos em Microsserviços
+# 🚀 Loja Veloz - Plataforma de Pedidos em Microsserviços
 
-## Como executar
+## 📌 Sobre o Projeto
+
+Este projeto foi desenvolvido como solução para o desafio da **Loja Veloz**, uma empresa de e-commerce de médio porte que enfrentava problemas recorrentes em produção:
+
+- ❌ Indisponibilidades durante deploys
+- ❌ Dificuldade para escalar em picos de acesso
+- ❌ Baixa rastreabilidade de falhas entre serviços
+
+A solução implementa uma arquitetura completa de **microsserviços containerizados**, com ambiente local reproduzível via Docker Compose e manifestos prontos para produção em Kubernetes.
+
+---
+
+## 🏗️ Arquitetura da Solução
+┌─────────────────┐
+│ API Gateway │
+│ (Porta 8080) │
+└────────┬────────┘
+│
+▼
+┌─────────────────┐
+│ Serviço Pedidos │
+│ (Porta 3003) │
+└────────┬────────┘
+│
+┌──────────────┼──────────────┐
+│ │ │
+▼ ▼ ▼
+┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+│ Estoque │ │ Pagamentos │ │ PostgreSQL │
+│ (Porta 3001)│ │ (Porta 3002)│ │ (Porta 5432)│
+└─────────────┘ └─────────────┘ └─────────────┘
+
+┌─────────────────┐
+│ API Gateway │
+│ (Porta 8080) │
+└────────┬────────┘
+│
+▼
+┌─────────────────┐
+│ Serviço Pedidos │
+│ (Porta 3003) │
+└────────┬────────┘
+│
+┌──────────────┼──────────────┐
+│ │ │
+▼ ▼ ▼
+┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+│ Estoque │ │ Pagamentos │ │ PostgreSQL │
+│ (Porta 3001)│ │ (Porta 3002)│ │ (Porta 5432)│
+└─────────────┘ └─────────────┘ └─────────────┘
+┌─────────────────┐
+│ API Gateway │
+│ (Porta 8080) │
+└────────┬────────┘
+│
+▼
+┌─────────────────┐
+│ Serviço Pedidos │
+│ (Porta 3003) │
+└────────┬────────┘
+│
+┌──────────────┼──────────────┐
+│ │ │
+▼ ▼ ▼
+┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+│ Estoque │ │ Pagamentos │ │ PostgreSQL │
+│ (Porta 3001)│ │ (Porta 3002)│ │ (Porta 5432)│
+└─────────────┘ └─────────────┘ └─────────────┘
+
+---
+
+## 📦 Serviços
+
+| Serviço | Porta | Descrição |
+|---------|-------|-----------|
+| **API Gateway** | 8080 | Ponto de entrada único para todas as requisições |
+| **Serviço de Pedidos** | 3003 | Gerencia criação e consulta de pedidos |
+| **Serviço de Pagamentos** | 3002 | Processa pagamentos (integração externa simulada) |
+| **Serviço de Estoque** | 3001 | Gerencia reserva e baixa de itens do estoque |
+| **PostgreSQL** | 5432 | Banco de dados relacional para persistência |
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+| Tecnologia | Finalidade |
+|------------|------------|
+| **Docker** | Containerização dos serviços |
+| **Docker Compose** | Orquestração para ambiente local |
+| **Kubernetes** | Orquestração para ambiente de produção |
+| **Node.js + Express** | APIs dos microsserviços |
+| **PostgreSQL** | Banco de dados relacional |
+| **GitHub Actions** | CI/CD (pipeline automatizado) |
+
+---
+
+## 🚀 Como Executar o Ambiente Local
+
+### Pré-requisitos
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado
+- Windows, Linux ou macOS
+
+### Passo a passo
+
+1. **Clone o repositório**
 
 ```bash
-docker compose up --build
+git clone [URL_DO_SEU_REPOSITORIO]
+cd loja-veloz
+
